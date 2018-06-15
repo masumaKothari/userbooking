@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<configuration>
+    <jmxConfigurator />
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <logger name="com.userbooking" level="INFO" />
+    <property name="userbooking.log.file" value="${LOG_FILE:-${LOG_PATH:-${java.io.tmpdir:-/tmp}}/userbooking-audit}"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator> <!-- deurn "faults to type ch.qos.logback.classic.boolex.JaninoEventEvaluator -->
+                <expression>return !(marker == null || !"stash".equals(marker.getName()));</expression>
+            </evaluator>
+            <OnMismatch>NEUTRAL</OnMismatch>
+            <OnMatch>DENY</OnMatch>
+        </filter>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    <appender name="async_STASH_FILE" class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">
+        <appender name="STASH_FILE"	class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${userbooking.log.file}-%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>20</maxHistory>
+            </rollingPolicy>
+            <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+                <evaluator class="ch.qos.logback.classic.boolex.GEventEvaluator">
+                    <expression>true</expression>
+                </evaluator>
+                <OnMismatch>DENY</OnMismatch>
+                <OnMatch>ACCEPT</OnMatch>
+            </filter>
+            <encoder>
+                <pattern>%date %-4relative %.-1level userbooking - %msg%n</pattern>
+            </encoder>
+        </appender>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <logger name="com.userbooking" level="INFO">
+        <appender-ref ref="async_STASH_FILE"/>
+    </logger>
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook">
+        <delay>5</delay>
+    </shutdownHook>
+</configuration>
