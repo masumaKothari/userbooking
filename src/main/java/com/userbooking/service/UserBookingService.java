@@ -2,7 +2,6 @@ package com.userbooking.service;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.userbooking.exception.UserNotFoundException;
 import com.userbooking.model.UserBooking;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
@@ -37,8 +35,8 @@ public class UserBookingService {
         return userBookingsFor(userId).stream().count();
     }
 
-    public long totalBookingValue(String userId) {
-        return userBookingsFor(userId).stream().mapToInt(userBooking -> userBooking.getTotalPriceInUSD()).sum();
+    public double totalBookingValue(String userId) {
+        return userBookingsFor(userId).stream().mapToDouble(userBooking -> userBooking.getTotalPriceInUSD()).sum();
     }
 
     public OptionalDouble averageLengthOfStay(String userId) {
@@ -54,8 +52,7 @@ public class UserBookingService {
     }
 
     @PostConstruct
-    @VisibleForTesting
-    private void loadUserBookingData()  {
+    public void loadUserBookingData()  {
         try {
             userBookings.clear();
             Preconditions.checkNotNull(userDataFileLocation);

@@ -20,7 +20,8 @@ Maven Build
 ------------
 
 ```bash
-    git clone git@gitlab.cwscloud.net:shadow/doc-gen-service.git
+    git clone git@github.com:masumaKothari/userbooking.git
+    cd userbooking
     mvn clean install
 ```
 
@@ -43,14 +44,14 @@ Test
 -------------------
 
 ```bash
-    curl http://localhost:8585/userBooking/numberOfBookings/1
+    curl http://localhost:8585/userBooking/1/numberOfBookings
 ```
 
 Endpoints 
 -----------
-* Total number of bookings for a user - <http://localhost:8585/userBooking/numberOfBookings/{userId}>
-* Total booking value for a user - <http://localhost:8585/userBooking/totalBookingValue/{userId}>
-* Average length of stay for a user - <http://localhost:8585/userBooking/averageLengthOfStay/{userId}>
+* Total number of bookings for a user - <http://localhost:8585/userBooking/{userId}/numberOfBookings>
+* Total booking value for a user - <http://localhost:8585/userBooking/{userId}/totalBookingValue>
+* Average length of stay for a user - <http://localhost:8585/userBooking/{userId}/averageLengthOfStay>
 
 Configuration
 ----------------------------------
@@ -58,7 +59,7 @@ Configuration
 |                Property                 |                 Description                 |                 Default Value                  |  
 | --------------------------------------- | ------------------------------------------- | ---------------------------------------------- |  
 | server.port | The port for the microservice to listen on | 8585 |  
-| userbooking.data.file.location | Path to location of the user features data file. | file:///C:/userbooking/data/user-features.txt |
+| userbooking.data.file.location | Path to location of the user features data file. This file should exist.| file:///C:/userbooking/data/user-features.txt |
 | logging.file | full file name, excluding rollingpattern.log  | {environment temp location}/userBooking and is suffixed with rolling pattern (%d{yyyy-MM-dd}.log) |
 | logging.path | path where log file will be created. If set, it replaces path part of logging.file property defined above  | {environment temp location} or '/tmp' if not set |
 

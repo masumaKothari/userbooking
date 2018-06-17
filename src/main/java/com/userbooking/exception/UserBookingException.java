@@ -13,10 +13,6 @@ public abstract class UserBookingException extends RuntimeException {
         super(message);
     }
 
-    public UserBookingException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     public abstract HttpStatus getHttpStatus();
 
     public Map<String, Object> getResponseBody(String userId) {

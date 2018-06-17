@@ -28,7 +28,7 @@ public class UserBookingController {
         this.objectMapper = objectMapper;
     }
 
-    @RequestMapping(value="/numberOfBookings/{userId}",
+    @RequestMapping(value="/{userId}/numberOfBookings",
             method = RequestMethod.GET,
             produces ="application/json")
     ResponseEntity<String> numberOfBookings(@PathVariable String userId) {
@@ -47,7 +47,7 @@ public class UserBookingController {
         }
     }
 
-    @RequestMapping(value="/totalBookingValue/{userId}",
+    @RequestMapping(value="/{userId}/totalBookingValue",
             method = RequestMethod.GET,
             produces ="application/json")
     ResponseEntity<String> totalBookingValue(@PathVariable String userId) {
@@ -66,7 +66,7 @@ public class UserBookingController {
         }
     }
 
-    @RequestMapping(value="/averageLengthOfStay/{userId}",
+    @RequestMapping(value="/{userId}/averageLengthOfStay",
             method = RequestMethod.GET,
             produces ="application/json")
     ResponseEntity<String> averageLengthOfStay(@PathVariable String userId) {

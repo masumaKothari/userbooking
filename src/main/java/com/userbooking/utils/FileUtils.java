@@ -13,7 +13,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class FileUtils {
 
     public static final String FILE = "file:///";
-    public static final String RESOURCE = "resource:";
     public static final String HTTP = "http";
     public static final String CLASSPATH = "classpath:";
 
@@ -28,8 +27,8 @@ public class FileUtils {
             File file = new File(fileS);
             checkArgument(file.exists(), "File [%s] not found on FS", filePath);
             is = new FileInputStream(file);
-        } else if (filePath.startsWith(RESOURCE) || filePath.startsWith(CLASSPATH)) {
-            filePath = filePath.replace(RESOURCE, "").replace("classpath:", "/");
+        } else if (filePath.startsWith(CLASSPATH)) {
+            filePath = filePath.replace("classpath:", "/");
             is = FileUtils.class.getResourceAsStream(filePath);
             Preconditions.checkNotNull(is, "Resource [%s] not found on classpath", filePath);
         } else {
